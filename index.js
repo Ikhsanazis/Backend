@@ -18,7 +18,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // CORS
-const allowlist = ['https://www.google.com']
+const allowlist = ['https://localhost:3000/Loginexample',"http://localhost:3000/Registerlagi"]
 const corsOptionsDelegate = function (req, callback) {
   let corsOptions
   if (allowlist.indexOf(req.header('Origin')) !== -1) {

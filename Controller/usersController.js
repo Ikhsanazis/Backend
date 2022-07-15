@@ -1,150 +1,151 @@
-const model = require('../model/usersModel')
-const bcrypt = require('bcrypt')
-const validator = require('email-validator')
-validator.validate('test@email.com')
+const model = require("../model/usersModel");
+const bcrypt = require("bcrypt");
+const validator = require("email-validator");
+validator.validate("test@email.com");
 
 // GET USERS
 const getUsers = async (req, res) => {
   try {
-    const getData = await model.getUsers()
+    const getData = await model.getUsers();
 
-    res.send({ data: getData.rows, jumlahData: getData.rowCount })
+    res.send({ data: getData.rows, jumlahData: getData.rowCount });
   } catch (error) {
-    res.status(400).send("There's an Error!")
+    res.status(400).send("There's an Error!");
   }
-}
+};
 
 // POST USERS
 const addUser = async (req, res) => {
   try {
-    const { id, username, email, password } = req.body
-    const inputId = id.trim()
-    const inputUsername = username.trim()
-    const inputEmail = email.toLowerCase().trim()
-    const inputPassword = password.trim()
+    const { id, username, email, password } = req.body;
+    const inputId = id.trim();
+    const inputUsername = username.trim();
+    const inputEmail = email.toLowerCase().trim();
+    const inputPassword = password.trim();
 
-    const salt = bcrypt.genSaltSync(15)
-    const hash = bcrypt.hashSync(inputPassword, salt)
+    const salt = bcrypt.genSaltSync(15);
+    const hash = bcrypt.hashSync(inputPassword, salt);
 
     const addUser = await model.addUser({
       inputId,
       inputUsername,
       inputEmail,
-      inputPassword: hash
-    })
+      inputPassword: hash,
+    });
 
-    const validator = require('email-validator')
-    const domain = inputEmail.split('.')
-    const check = validator.validate(email)
+    const validator = require("email-validator");
+    const domain = inputEmail.split(".");
+    const check = validator.validate(inputEmail);
 
-    console.log(inputEmail)
-    console.log(domain)
-    console.log(check)
+    console.log(inputEmail);
+    console.log(domain);
+    console.log(check);
 
-    const checkEmail = (inputEmail) => {
-      const case1 = domain[1] === 'com' && domain.length <= 2
+    const checkEmail = () => {
+      const case1 = domain[1] === "com" && domain.length <= 2;
       // console.log(case1 + ' ini case1')
-      const case2 = domain[1] === 'co' && domain[2] === 'id' && domain.length <= 3
+      const case2 =
+        domain[1] === "co" && domain[2] === "id" && domain.length <= 3;
       // console.log(case2 + ' ini case2')
 
       if (check) {
         if (case1 || case2) {
-          return true
+          return true;
         } else {
-          return false
+          return false;
         }
       } else {
-        return false
+        return false;
       }
-    }
+    };
 
-    const test = checkEmail(inputEmail)
-    console.log(test + ' ini test')
+    const test = checkEmail(inputEmail);
+    console.log(test + " ini test");
 
-    const checkPassword = inputPassword.length >= 8
+    const checkPassword = inputPassword.length >= 8;
     if (addUser) {
       if (test) {
         if (checkPassword) {
-          res.send('succes to register!')
+          res.send("succes to register!");
         } else {
-          res.send('Password must have 8 characters')
+          res.send("Password must have 8 characters");
         }
       } else {
-        res.status(400).send('unvalid email!')
+        res.status(400).send("unvalid email!");
       }
     } else {
-      res.status(400).send('Failed to added')
+      res.status(400).send("Failed to added");
     }
   } catch (error) {
-    res.status(400).send('Complete your data or using new email!')
-    console.log(error)
+    res.status(400).send("Complete your data or using new email!");
+    console.log(error);
   }
-}
+};
 
 // PATCH USERS
 const editUser = async (req, res) => {
   try {
-    const { id, username, email, password } = req.body
-    const getData = await model.getUserById(id)
+    const { id, username, email, password } = req.body;
+    const getData = await model.getUserById(id);
 
     if (getData.rowCount > 0) {
-      const newUserName = username || getData?.rows[0]?.userName
-      const newPassword = password || getData?.rows[0]?.password
-      const newEmail = email || getData?.rows[0]?.email
+      const newUserName = username || getData?.rows[0]?.userName;
+      const newPassword = password || getData?.rows[0]?.password;
+      const newEmail = email || getData?.rows[0]?.email;
 
-      let message = ''
+      let message = "";
 
-      if (newUserName) message += 'username,'
-      if (newPassword) message += 'password,'
-      if (newEmail) message += 'email,'
+      if (newUserName) message += "username,";
+      if (newPassword) message += "password,";
+      if (newEmail) message += "email,";
 
       const editData = await model.editUser({
         username: newUserName,
         email: newEmail,
         password: newPassword,
-        id
-      })
+        id,
+      });
 
       if (editData) {
-        res.send(`${message} changed`)
+        res.send(`${message} changed`);
       } else {
-        res.status(400).send('data failed to change')
+        res.status(400).send("data failed to change");
       }
     } else {
-      res.status(400).send('data not found')
+      res.status(400).send("data not found");
     }
   } catch (error) {
-    console.log(error)
-    res.status(400).send("There's an Error!")
+    console.log(error);
+    res.status(400).send("There's an Error!");
   }
-}
+};
 
 // DELETE USERS
 const deleteUser = async (req, res) => {
   try {
-    const { id } = req.body
-    const getData = await model.getUserById(id)
+    const { id } = req.body;
+    const getData = await model.getUserById(id);
 
     if (getData.rowCount > 0) {
-      const deleteUser = await model.deleteUser(id)
+      const deleteUser = await model.deleteUser(id);
 
       if (deleteUser) {
-        res.send(`data with id ${id} deleted`)
+        res.send(`data with id ${id} deleted`);
       } else {
-        res.status(400).send('data failed to delete!')
+        res.status(400).send("data failed to delete!");
       }
     } else {
-      res.status(400).send('data not found')
+      res.status(400).send("data not found");
     }
   } catch (error) {
-    console.log(error)
-    res.status(400).send("There's an Error!")
+    console.log(error);
+    res.status(400).send("There's an Error!");
   }
-}
+};
 
 module.exports = {
   getUsers,
   addUser,
   editUser,
-  deleteUser
-}
+  deleteUser,
+};
