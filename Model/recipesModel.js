@@ -1,51 +1,50 @@
-const db = require('../db') // DATABASE
+const db = require("../db"); // DATABASE
 
 // GET RECIPES
 const getRecipes = () => {
   return new Promise((resolve, reject) => {
-    db.query('SELECT * FROM recipes ', (error, result) => {
+    db.query("SELECT * FROM recipes ", (error, result) => {
       if (error) {
-        reject(error)
+        reject(error);
       } else {
-        resolve(result)
+        resolve(result);
       }
-    })
-  })
-}
+    });
+  });
+};
 
 // FIND RECIPES
 const findRecipes = (name) => {
   return new Promise((resolve, reject) => {
     db.query(
-      'SELECT * FROM recipes WHERE name = $1',
+      "SELECT * FROM recipes WHERE name = $1",
       [name],
       (error, result) => {
         if (error) {
-          reject(error)
+          reject(error);
         } else {
-          resolve(result)
+          resolve(result);
         }
       }
-    )
-  })
-}
+    );
+  });
+};
 
 // FIND NEW RECIPES
-const newRecipes = (id) => {
+const newRecipes = () => {
   return new Promise((resolve, reject) => {
     db.query(
-      'SELECT * FROM recipes ORDER BY id  DESC LIMIT 5 ',
-      [id],
+      "SELECT * FROM recipes ORDER BY recipe_id  DESC LIMIT 5",
       (error, result) => {
         if (error) {
-          reject(error)
+          reject(error);
         } else {
-          resolve(result)
+          resolve(result);
         }
       }
-    )
-  })
-}
+    );
+  });
+};
 
 // PAGINATION
 const pagination = (pagenumber, row) => {
@@ -55,74 +54,101 @@ const pagination = (pagenumber, row) => {
       // [props.row, props.page],
       (error, result) => {
         if (pagenumber <= 0 || row <= 0) {
-          reject(error)
+          reject(error);
         } else {
-          resolve(result)
-          console.log(result)
+          resolve(result);
+          console.log(result);
         }
       }
-    )
-  })
-}
+    );
+  });
+};
 
 // POST RECIPES
 const addRecipes = (props) => {
   return new Promise((resolve, reject) => {
     db.query(
-      'INSERT INTO recipes (id, name, ingredients, image, video) VALUES ($1, $2, $3, $4, $5)',
-      [props.id, props.name, props.ingredients, props.image, props.video],
+      "INSERT INTO recipes ( name, ingredients, category,user_id,image,video) VALUES ($1, $2, $3, $4, $5, $6)",
+      [
+        props.name,
+        props.ingredients,
+        props.category,
+        props.user_id,
+        props.image,
+        props.video,
+      ],
       (error, result) => {
         if (error) {
-          reject(error)
+          reject(error);
         } else {
-          resolve(result)
+          resolve(result);
         }
       }
-    )
-  })
-}
+    );
+  });
+};
 
 // PATCH RECIPES
 const editRecipes = (props) => {
   return new Promise((resolve, reject) => {
     db.query(
-      'UPDATE recipes SET name= $1,ingredients = $2 WHERE id = $3',
+      "UPDATE recipes SET name= $1,ingredients = $2 WHERE id = $3",
       [props.name, props.ingredients, props.id],
       (error, result) => {
         if (error) {
-          reject(error)
+          reject(error);
         } else {
-          resolve(result)
+          resolve(result);
         }
       }
-    )
-  })
-}
+    );
+  });
+};
 
 // DELETE RECIPES
-const getRecipesById = (id) => {
+const getRecipesById = (recipe_id) => {
   return new Promise((resolve, reject) => {
-    db.query('SELECT * FROM recipes WHERE id = $1', [id], (error, result) => {
-      if (error) {
-        reject(error)
-      } else {
-        resolve(result)
+    db.query(
+      "SELECT * FROM recipes WHERE recipe_id = $1",
+      [recipe_id],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
       }
-    })
-  })
-}
+    );
+  });
+};
+
+const getRecipesByUser = (user_id) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT * FROM recipes WHERE user_id = $1",
+      [user_id],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
 
 const deleteRecipes = (id) => {
   return new Promise((resolve, reject) => {
-    db.query('DELETE FROM recipes WHERE id = $1', [id], (error, result) => {
+    db.query("DELETE FROM recipes WHERE id = $1", [id], (error, result) => {
       if (error) {
-        reject(error)
+        reject(error);
       } else {
-        resolve(result)
+        resolve(result);
       }
-    })
-  })
-}
+    });
+  });
+};
 
 module.exports = {
   getRecipes,
@@ -132,5 +158,6 @@ module.exports = {
   editRecipes,
   getRecipesById,
   deleteRecipes,
-  pagination
-}
+  pagination,
+  getRecipesByUser,
+};

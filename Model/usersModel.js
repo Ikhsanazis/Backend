@@ -47,8 +47,8 @@ const getUserById = (id) => {
 const addUser = (props) => {
   return new Promise((resolve, reject) => {
     db.query(
-      'INSERT INTO users (id, username, email, password) VALUES ($1, $2, $3, $4) RETURNING *',
-      [props.inputId, props.inputUsername, props.inputEmail, props.inputPassword],
+      'INSERT INTO users ( username, email, password) VALUES ($1, $2, $3) RETURNING *',
+      [props.inputUsername, props.inputEmail, props.inputPassword],
       (error, result) => {
         if (error) {
           reject(error)

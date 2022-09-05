@@ -1,9 +1,9 @@
 const Router = require('express').Router()
 const controller = require('../Controller/usersController')
-const middleware = require('../middleware/verifyToken')
+// const middleware = require('../middleware/verifyToken')
 
 // GET USERS
-Router.get('/users', middleware, controller.getUsers)
+Router.get('/users',  controller.getUsers)
 
 // POST USERS
 Router.post('/users/add', controller.addUser)

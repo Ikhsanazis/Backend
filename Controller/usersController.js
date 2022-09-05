@@ -17,9 +17,8 @@ const getUsers = async (req, res) => {
 // POST USERS
 const addUser = async (req, res) => {
   try {
-    const { id, username, email, password } = req.body;
-    const inputId = id.trim();
-    const inputUsername = username.trim();
+    const { username, email, password } = req.body;
+    const inputUsername = username;
     const inputEmail = email.toLowerCase().trim();
     const inputPassword = password.trim();
 
@@ -27,7 +26,6 @@ const addUser = async (req, res) => {
     const hash = bcrypt.hashSync(inputPassword, salt);
 
     const addUser = await model.addUser({
-      inputId,
       inputUsername,
       inputEmail,
       inputPassword: hash,

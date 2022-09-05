@@ -5,17 +5,23 @@ const upload = require('../Middleware/multer')
 // GET RECIPES ROUTES
 Router.get('/recipes', controller.getRecipes)
 
+// GET RECIPES ROUTES
+Router.get('/recipes/:recipe_id', controller.getDetailRecipes)
+
+// GET RECIPES ROUTES
+Router.get('/recipes/:user_id', controller.getUsersRecipes)
+
 // FIND RECIPES
 Router.get('/recipes/find', controller.findRecipes)
 
 // FIND NEW RECIPES
-Router.get('/recipes/newrecipe', controller.newRecipes)
+Router.get('/newrecipe', controller.newRecipes)
 
 // pagination
 Router.get('/recipes/pagination', controller.pagination)
 
 // POST RECIPES
-Router.post('/recipes/add', upload, controller.addRecipes)
+Router.post('/recipes/add/:id',upload, controller.addRecipes)
 
 // PATCH RECIPES
 Router.patch('/recipes/edit', controller.editRecipes)
@@ -24,4 +30,4 @@ Router.patch('/recipes/edit', controller.editRecipes)
 Router.delete('/recipes/delete', controller.deleteRecipes)
 
 module.exports = Router
-// ,upload.uploadVideos
+
