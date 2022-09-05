@@ -83,29 +83,44 @@ const addUser = async (req, res) => {
 // PATCH USERS
 const editUser = async (req, res) => {
   try {
-    const { id, username, email, password } = req.body;
+    const { username, email, password } = req.body;
+
+    const id = req?.params.id;
+    console.log(req.params, id);
+
+    const isimage = req.files.image;
+    !isimage ? null : isimage[0];
+    const image = isimage[0].filename;
+    // image? req.files.image[0].filename:[]
+    console.log("----------------------------");
+    console.log(image);
+
+    console.log("----------------------------");
+    
     const getData = await model.getUserById(id);
+    console.log(getData);
 
     if (getData.rowCount > 0) {
       const newUserName = username || getData?.rows[0]?.userName;
       const newPassword = password || getData?.rows[0]?.password;
       const newEmail = email || getData?.rows[0]?.email;
 
-      let message = "";
+      let message = "profile";
 
-      if (newUserName) message += "username,";
-      if (newPassword) message += "password,";
-      if (newEmail) message += "email,";
+      // if (newUserName) message += "username,";
+      // if (newPassword) message += "password,";
+      // if (newEmail) message += "email,";
 
       const editData = await model.editUser({
         username: newUserName,
         email: newEmail,
         password: newPassword,
+        image,
         id,
       });
 
       if (editData) {
-        res.send(`${message} changed`);
+        res.send(`${message} updated`);
       } else {
         res.status(400).send("data failed to change");
       }

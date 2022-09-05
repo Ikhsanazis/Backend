@@ -24,7 +24,7 @@ Router.get('/recipes/pagination', controller.pagination)
 Router.post('/recipes/add/:id',upload, controller.addRecipes)
 
 // PATCH RECIPES
-Router.patch('/recipes/edit', controller.editRecipes)
+Router.patch('/edit/:recipe_id',upload, controller.editRecipes)
 
 // DELETE RECIPES ROUTES
 Router.delete('/recipes/delete', controller.deleteRecipes)

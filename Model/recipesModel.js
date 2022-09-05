@@ -89,21 +89,44 @@ const addRecipes = (props) => {
 };
 
 // PATCH RECIPES
+// const editRecipes = (props) => {
+//   return new Promise((resolve, reject) => {
+//     db.query(
+//       "UPDATE recipes SET name= $1,ingredients = $2,category=$3,image=$4,video=$5 WHERE recipe_id = $6",
+//       [
+//         props.name,
+//         props.ingredients,
+//         props.category,
+//         props.image,
+//         props.video,
+//         props.recipe_id,
+//       ],
+//       (error, result) => {
+//         if (error) {
+//           reject(error);
+//         } else {
+//           resolve(result);
+//         }
+//       }
+//     );
+//   });
+// };
+
 const editRecipes = (props) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "UPDATE recipes SET name= $1,ingredients = $2 WHERE id = $3",
-      [props.name, props.ingredients, props.id],
+      'UPDATE recipes SET name = $1, ingredients = $2, category = $3, image = $4, video=$5, user_id=$6 WHERE recipe_id = $7',
+      [props.name, props.ingredients, props.category,props.image,props.video, props.user_id, props.recipe_id],
       (error, result) => {
         if (error) {
-          reject(error);
+          reject(error)
         } else {
-          resolve(result);
+          resolve(result)
         }
       }
-    );
-  });
-};
+    )
+  })
+}
 
 // DELETE RECIPES
 const getRecipesById = (recipe_id) => {
@@ -138,6 +161,23 @@ const getRecipesByUser = (user_id) => {
   });
 };
 
+const getRecipeToEdit = (user_id,recipe_id) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT * FROM recipes WHERE user_id = $1 AND recipe_id = $2",
+      [user_id,recipe_id],
+      (error, result) => {
+        if (error) {
+          console.log(error)
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
 const deleteRecipes = (id) => {
   return new Promise((resolve, reject) => {
     db.query("DELETE FROM recipes WHERE id = $1", [id], (error, result) => {
@@ -160,4 +200,5 @@ module.exports = {
   deleteRecipes,
   pagination,
   getRecipesByUser,
+  getRecipeToEdit
 };
