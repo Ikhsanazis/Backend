@@ -1,21 +1,27 @@
-const Postgre = require('pg').Pool
-require('dotenv').config()
+const { Client, Pool } = require("pg");
 
-const connection = new Postgre({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT
-})
-const connect = async () => {
-  try {
-    const response = await connection.connect()
-    if (response) console.log('Connect')
-  } catch (err) {
-    console.log(err)
-  }
+let connection;
+
+if (process.env.ENV_MODE === "prod") {
+  connection = new Client({
+    connectionString:
+      "postgres://dknqzwoeglvjnz:c52eb64e0abfa2def4dac97da255c2bc9108d19989773edbe6fc65adc9c0a869@ec2-52-20-166-21.compute-1.amazonaws.com:5432/d666rujpar8n53",
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+} else {
+  connection = new Pool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT || 5432,
+  });
 }
 
-connect()
+connection.connect(function (err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
 module.exports = connection
