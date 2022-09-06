@@ -5,7 +5,7 @@ let connection;
 if (process.env.ENV_MODE === "prod") {
   connection = new Client({
     connectionString:
-      "postgres://dknqzwoeglvjnz:c52eb64e0abfa2def4dac97da255c2bc9108d19989773edbe6fc65adc9c0a869@ec2-52-20-166-21.compute-1.amazonaws.com:5432/d666rujpar8n53",
+      process.env.DB_URI
     ssl: {
       rejectUnauthorized: false,
     },
