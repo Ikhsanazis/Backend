@@ -2,7 +2,13 @@
 const { Pool, Client } = require("pg");
 require("dotenv").config();
 
-console.log("process.env.ENV_MODE", process.env.ENV_MODE);
+console.log(process.env.DB_PORT)
+console.log(process.env.DB_USER)
+console.log(process.env.DB_PASSWORD)
+console.log(process.env.DB_HOST)
+console.log(process.env.DB_DATABASE)
+
+
 let connection;
 if (process.env.ENV_MODE === "prod") {
   connection = new Client({
