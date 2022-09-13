@@ -1,26 +1,25 @@
+/* eslint-disable no-undef */
+const { Pool, Client } = require("pg");
 require("dotenv").config();
-const { Client, Pool } = require("pg");
 
+console.log("process.env.ENV_MODE", process.env.ENV_MODE);
 let connection;
-
 if (process.env.ENV_MODE === "prod") {
   connection = new Client({
     connectionString: process.env.DB_URI,
-    // c43a7c8aef9c9a3e3846c8a09b190b327ccf0cbc
     ssl: {
       rejectUnauthorized: false,
     },
   });
 } else {
   connection = new Pool({
-    host: process.env.DB_HOST,
     user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST,
     database: process.env.DB_DATABASE,
-    port: process.env.DB_PORT || 5432,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
   });
 }
-
 
 const connect = async () => {
   try {

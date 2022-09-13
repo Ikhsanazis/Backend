@@ -1,4 +1,4 @@
-const db = require('../db') // DATABASE
+const db = require('../config/db') // DATABASE
 
 // GET ALL USERS
 const getUsers = () => {
