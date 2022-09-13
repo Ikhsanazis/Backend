@@ -13,6 +13,18 @@ const getRecipes = () => {
   });
 };
 
+const getPopular = () => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT * FROM recipes ORDER BY liked DESC", (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
 // FIND RECIPES
 const findRecipes = (name) => {
   return new Promise((resolve, reject) => {
@@ -179,5 +191,6 @@ module.exports = {
   deleteRecipes,
   pagination,
   getRecipesByUser,
-  getRecipeToEdit
+  getRecipeToEdit,
+  getPopular
 };

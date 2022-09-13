@@ -12,6 +12,17 @@ const getRecipes = async (req, res) => {
   }
 };
 
+const getPopular = async (req, res) => {
+  try {
+    const getData = await model.getPopular();
+
+    res.send({ data: getData.rows, jumlahData: getData.rowCount });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("There's an Error!");
+  }
+};
+
 const getDetailRecipes = async (req, res) => {
   try {
     const recipe_id = parseInt(req?.params?.recipe_id);
@@ -229,4 +240,5 @@ module.exports = {
   pagination,
   getUsersRecipes,
   getDetailRecipes,
+  getPopular
 };
