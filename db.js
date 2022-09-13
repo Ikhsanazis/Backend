@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { Client, Pool } = require("pg");
 
 let connection;
@@ -14,14 +15,21 @@ if (process.env.ENV_MODE === "prod") {
   connection = new Pool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
     port: process.env.DB_PORT || 5432,
   });
 }
 
-connection.connect(function (err) {
-  if (err) throw err;
-  console.log("Connected!");
-});
+
+const connect = async () => {
+  try {
+    const response = await connection.connect();
+    if (response) console.log("Connect to database");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+connect();
 module.exports = connection;
