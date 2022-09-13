@@ -68,7 +68,7 @@ const pagination = (pagenumber, row) => {
 const addRecipes = (props) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "INSERT INTO recipes ( name, ingredients, category,user_id,image,video) VALUES ($1, $2, $3, $4, $5, $6)",
+      "INSERT INTO recipes ( name, ingredients, category,user_id,image,video,liked) VALUES ($1, $2, $3, $4, $5, $6, $7)",
       [
         props.name,
         props.ingredients,
@@ -76,6 +76,7 @@ const addRecipes = (props) => {
         props.user_id,
         props.image,
         props.video,
+        props.liked
       ],
       (error, result) => {
         if (error) {
@@ -88,29 +89,7 @@ const addRecipes = (props) => {
   });
 };
 
-// PATCH RECIPES
-// const editRecipes = (props) => {
-//   return new Promise((resolve, reject) => {
-//     db.query(
-//       "UPDATE recipes SET name= $1,ingredients = $2,category=$3,image=$4,video=$5 WHERE recipe_id = $6",
-//       [
-//         props.name,
-//         props.ingredients,
-//         props.category,
-//         props.image,
-//         props.video,
-//         props.recipe_id,
-//       ],
-//       (error, result) => {
-//         if (error) {
-//           reject(error);
-//         } else {
-//           resolve(result);
-//         }
-//       }
-//     );
-//   });
-// };
+
 
 const editRecipes = (props) => {
   return new Promise((resolve, reject) => {

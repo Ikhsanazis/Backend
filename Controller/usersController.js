@@ -163,14 +163,7 @@ const editUserProfile = async (req, res) => {
 
       let message = "Profile picture";
 
-      // if (newUserName) message += "username,";
-      // if (newPassword) message += "password,";
-      // if (newEmail) message += "email,";
-
       const editData = await model.editUserProfile({
-        // username: newUserName,
-        // email: newEmail,
-        // password: newPassword,
         image,
         id,
       });

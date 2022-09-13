@@ -86,17 +86,16 @@ const addRecipes = async (req, res) => {
     console.log(req.body.name);
     const user_id = req?.params.id;
     console.log(req.params, user_id);
+    const liked = 0;
 
-    const isimage = req.files.image;
-    !isimage ? null : isimage[0];
-    const image = isimage[0].filename;
+    const image = req.files.image[0].filename;
     // image? req.files.image[0].filename:[]
     console.log("----------------------------");
     console.log(image);
 
     console.log("----------------------------");
     // {video?video:[]}
-    req.files.video ? req.files.video : [];
+    // req.files.video ? req.files.video : [];
     const video = req.files.video.map((e) => {
       return e.filename;
     });
@@ -109,6 +108,7 @@ const addRecipes = async (req, res) => {
       image,
       video,
       category,
+      liked,
       user_id,
     });
 
