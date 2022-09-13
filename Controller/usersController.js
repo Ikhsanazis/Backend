@@ -88,15 +88,17 @@ const editUser = async (req, res) => {
     const id = req?.params.id;
     console.log(req.params, id);
 
-    const isimage = req.files.image;
-    !isimage ? null : isimage[0];
-    const image = isimage[0].filename;
+    // const isimage = req.files.image;
+    // !isimage ? null : isimage[0];
+    // const image = isimage[0].filename;
     // image? req.files.image[0].filename:[]
-    console.log("----------------------------");
-    console.log(image);
+    // const image = req.files.image[0].filename;
+
+    // console.log("----------------------------");
+    // console.log(image);
 
     console.log("----------------------------");
-    
+
     const getData = await model.getUserById(id);
     console.log(getData);
 
@@ -115,6 +117,60 @@ const editUser = async (req, res) => {
         username: newUserName,
         email: newEmail,
         password: newPassword,
+        // image,
+        id,
+      });
+
+      if (editData) {
+        res.send(`${message} updated`);
+      } else {
+        res.status(400).send("data failed to change");
+      }
+    } else {
+      res.status(400).send("data not found");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("There's an Error!");
+  }
+};
+
+const editUserProfile = async (req, res) => {
+  try {
+    // const { username, email, password } = req.body;
+
+    const id = req?.params.id;
+    console.log(req.params, id);
+
+    // const isimage = req.files.image;
+    // !isimage ? null : isimage[0];
+    // const image = isimage[0].filename;
+    // image? req.files.image[0].filename:[]
+    const image = req.files.image[0].filename;
+
+    console.log("----------------------------");
+    console.log(image);
+
+    console.log("----------------------------");
+
+    const getData = await model.getUserById(id);
+    console.log(getData);
+
+    if (getData.rowCount > 0) {
+      // const newUserName = username || getData?.rows[0]?.userName;
+      // const newPassword = password || getData?.rows[0]?.password;
+      // const newEmail = email || getData?.rows[0]?.email;
+
+      let message = "Profile picture";
+
+      // if (newUserName) message += "username,";
+      // if (newPassword) message += "password,";
+      // if (newEmail) message += "email,";
+
+      const editData = await model.editUserProfile({
+        // username: newUserName,
+        // email: newEmail,
+        // password: newPassword,
         image,
         id,
       });
@@ -161,4 +217,5 @@ module.exports = {
   addUser,
   editUser,
   deleteUser,
+  editUserProfile
 };

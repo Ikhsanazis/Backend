@@ -77,6 +77,22 @@ const editUser = (props) => {
   })
 }
 
+const editUserProfile = (props) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      'UPDATE users SET  image = $1 WHERE id = $2',
+      [props.image, props.id],
+      (error, result) => {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(result)
+        }
+      }
+    )
+  })
+}
+
 // DELETE USERS
 const deleteUser = (id) => {
   return new Promise((resolve, reject) => {
@@ -96,5 +112,6 @@ module.exports = {
   getUserById,
   addUser,
   editUser,
+  editUserProfile,
   deleteUser
 }
