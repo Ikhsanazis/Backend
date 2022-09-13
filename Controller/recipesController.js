@@ -1,4 +1,4 @@
-const model = require("../model/recipesModel");
+const model = require("../Model/recipesModel");
 
 // GET RECIPES
 const getRecipes = async (req, res) => {

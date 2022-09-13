@@ -25,12 +25,10 @@ const login = async (req, res) => {
         );
         console.log(token);
 
-        res
-          .status(200)
-          .send({
-            user: { ...getUserByEmail?.rows[0], ...{ password: null } },
-            token,
-          });
+        res.status(200).send({
+          user: { ...getUserByEmail?.rows[0], ...{ password: null } },
+          token,
+        });
       } else {
         res.status(401).send("Password is not correct ! Try Again.");
       }
