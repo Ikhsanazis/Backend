@@ -1,4 +1,4 @@
-const model = require("../model/usersModel");
+const model = require("../Model/usersModel");
 const bcrypt = require("bcrypt");
 const validator = require("email-validator");
 validator.validate("test@email.com");
