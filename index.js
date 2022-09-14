@@ -26,7 +26,7 @@ app.use('/static', express.static('images'))
 // CORS
 const allowlist = [
   "https://localhost:3000",
-  "http://localhost:3000/Registerlagi",
+  "https://secretingredients-98d7f.web.app",
 ];
 const corsOptionsDelegate = function (req, callback) {
   let corsOptions;
