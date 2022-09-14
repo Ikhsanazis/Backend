@@ -88,7 +88,7 @@ const addRecipes = (props) => {
         props.user_id,
         props.image,
         props.video,
-        props.liked
+        props.liked,
       ],
       (error, result) => {
         if (error) {
@@ -101,29 +101,35 @@ const addRecipes = (props) => {
   });
 };
 
-
-
 const editRecipes = (props) => {
   return new Promise((resolve, reject) => {
     db.query(
-      'UPDATE recipes SET name = $1, ingredients = $2, category = $3, image = $4, video=$5, user_id=$6 WHERE recipe_id = $7',
-      [props.name, props.ingredients, props.category,props.image,props.video, props.user_id, props.recipe_id],
+      "UPDATE recipes SET name = $1, ingredients = $2, category = $3, image = $4, video=$5, user_id=$6 WHERE recipe_id = $7",
+      [
+        props.name,
+        props.ingredients,
+        props.category,
+        props.image,
+        props.video,
+        props.user_id,
+        props.recipe_id,
+      ],
       (error, result) => {
         if (error) {
-          reject(error)
+          reject(error);
         } else {
-          resolve(result)
+          resolve(result);
         }
       }
-    )
-  })
-}
+    );
+  });
+};
 
 // DELETE RECIPES
 const getRecipesById = (recipe_id) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "SELECT * FROM recipes WHERE recipe_id = $1",
+      "SELECT users.id, users.username, recipes.name, recipes.recipe_id, recipes.ingredients,recipes.image, recipes.video FROM recipes INNER JOIN users ON recipes.recipe_id = users.id WHERE recipe_id = $1",
       [recipe_id],
       (error, result) => {
         if (error) {
@@ -152,14 +158,14 @@ const getRecipesByUser = (user_id) => {
   });
 };
 
-const getRecipeToEdit = (user_id,recipe_id) => {
+const getRecipeToEdit = (user_id, recipe_id) => {
   return new Promise((resolve, reject) => {
     db.query(
       "SELECT * FROM recipes WHERE user_id = $1 AND recipe_id = $2",
-      [user_id,recipe_id],
+      [user_id, recipe_id],
       (error, result) => {
         if (error) {
-          console.log(error)
+          console.log(error);
           reject(error);
         } else {
           resolve(result);
@@ -192,5 +198,5 @@ module.exports = {
   pagination,
   getRecipesByUser,
   getRecipeToEdit,
-  getPopular
+  getPopular,
 };
