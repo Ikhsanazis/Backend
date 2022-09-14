@@ -47,6 +47,8 @@ app.use("/", cors(corsOptionsDelegate), recipesRoutes);
 app.use("/", cors(corsOptionsDelegate), commentsRoutes);
 app.use("/", cors(corsOptionsDelegate), authRoutes);
 
+app.use(express.static('images'))
+
 app.use("*", (req, res) => {
   res.send("Sukses");
 });
