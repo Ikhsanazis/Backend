@@ -21,7 +21,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/static', express.static('images'))
+const path = require("path");
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 // CORS
 const allowlist = [
@@ -48,7 +49,6 @@ app.use("/", cors(corsOptionsDelegate), usersRoutes);
 app.use("/", cors(corsOptionsDelegate), recipesRoutes);
 app.use("/", cors(corsOptionsDelegate), commentsRoutes);
 app.use("/", cors(corsOptionsDelegate), authRoutes);
-
 
 app.use("*", (req, res) => {
   res.send("Sukses");

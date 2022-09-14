@@ -97,7 +97,7 @@ const addRecipes = async (req, res) => {
     console.log(req.body.name);
     const user_id = req?.params.id;
     console.log(req.params, user_id);
-    const liked = 0;
+    const liked = 10;
 
     const image = req.files.image[0].filename;
     // image? req.files.image[0].filename:[]
@@ -139,7 +139,7 @@ const editRecipes = async (req, res) => {
   try {
     const { name, ingredients, category } = req.body;
     const { recipe_id } = req.params;
-    console.log( recipe_id);
+    console.log(recipe_id);
 
     const getData = await model.getRecipesById(recipe_id);
     console.log(getData, "TEST");
@@ -168,7 +168,6 @@ const editRecipes = async (req, res) => {
       const newUser_id = getData.rows[0].user_id;
       // console.log(image)
 
-
       let message = "Recipe";
       // console.log(newIngredients)
       // if (newName) message += "Name,";
@@ -180,7 +179,7 @@ const editRecipes = async (req, res) => {
         image,
         video,
         user_id: newUser_id,
-        recipe_id : newRecipe_id,
+        recipe_id: newRecipe_id,
       });
 
       // const editData = await model.editRecipes({
@@ -240,5 +239,5 @@ module.exports = {
   pagination,
   getUsersRecipes,
   getDetailRecipes,
-  getPopular
+  getPopular,
 };
