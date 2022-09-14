@@ -21,6 +21,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use('/static', express.static('images'))
+
 // CORS
 const allowlist = [
   "https://localhost:3000",
@@ -47,7 +49,6 @@ app.use("/", cors(corsOptionsDelegate), recipesRoutes);
 app.use("/", cors(corsOptionsDelegate), commentsRoutes);
 app.use("/", cors(corsOptionsDelegate), authRoutes);
 
-app.use(express.static('images'))
 
 app.use("*", (req, res) => {
   res.send("Sukses");
