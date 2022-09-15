@@ -12,8 +12,8 @@ Router.get("/users/:id", controller.getUserById);
 Router.post("/users/add", controller.addUser);
 
 // PATCH USERS
-Router.patch("/users/edit/:id", controller.editUser);
-Router.patch("/users/editprofile/:id", upload, controller.editUserProfile);
+Router.patch("/user/edit/:id", controller.editUser);
+Router.patch("/user/editimage/:id", upload, controller.editUserProfile);
 
 // DELETE USERS ROUTES
 Router.delete("/users/delete", controller.deleteUser);

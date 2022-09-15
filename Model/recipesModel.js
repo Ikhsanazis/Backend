@@ -13,6 +13,30 @@ const getRecipes = () => {
   });
 };
 
+const getSave = (user_id) => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT recipes.image, recipes.recipe_id, recipes.category, recipes.liked FROM saves INNER JOIN recipes ON saves.recipe_id = recipes.recipe_id WHERE saves.user_id=$1 ",[user_id], (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
+const getLike = (user_id) => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT recipes.image, recipes.recipe_id, recipes.category, recipes.liked FROM likes INNER JOIN recipes ON likes.recipe_id = recipes.recipe_id WHERE likes.user_id=$1 ",[user_id], (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
 const getPopular = () => {
   return new Promise((resolve, reject) => {
     db.query("SELECT * FROM recipes ORDER BY liked DESC", (error, result) => {
@@ -76,20 +100,43 @@ const pagination = (pagenumber, row) => {
   });
 };
 
+const addLike = (props) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "INSERT INTO likes ( user_id, recipe_id) VALUES ($1, $2) RETURNING *",
+      [props.user_id, props.recipe_id],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
+const addSave = (props) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "INSERT INTO saves ( user_id, recipe_id) VALUES ($1, $2) RETURNING *",
+      [ props.user_id, props.recipe_id],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
 // POST RECIPES
 const addRecipes = (props) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "INSERT INTO recipes ( name, ingredients, category,user_id,image,video,liked) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-      [
-        props.name,
-        props.ingredients,
-        props.category,
-        props.user_id,
-        props.image,
-        props.video,
-        props.liked,
-      ],
+      "INSERT INTO recipes ( name, ingredients, category,user_id) VALUES ($1, $2, $3, $4, )",
+      [props.name, props.ingredients, props.category, props.user_id],
       (error, result) => {
         if (error) {
           reject(error);
@@ -102,6 +149,30 @@ const addRecipes = (props) => {
 };
 
 const editRecipes = (props) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "UPDATE recipes SET name = $1, ingredients = $2, category = $3, image = $4, video=$5, user_id=$6 WHERE recipe_id = $7",
+      [
+        props.name,
+        props.ingredients,
+        props.category,
+        props.image,
+        props.video,
+        props.user_id,
+        props.recipe_id,
+      ],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
+const editRecipesImage = (props) => {
   return new Promise((resolve, reject) => {
     db.query(
       "UPDATE recipes SET name = $1, ingredients = $2, category = $3, image = $4, video=$5, user_id=$6 WHERE recipe_id = $7",
@@ -199,4 +270,9 @@ module.exports = {
   getRecipesByUser,
   getRecipeToEdit,
   getPopular,
+  editRecipesImage,
+  getSave,
+  addLike,
+  addSave,
+  getLike,
 };

@@ -7,7 +7,7 @@ validator.validate("test@email.com");
 const getUsers = async (req, res) => {
   try {
     const getData = await model.getUsers();
-
+    console.log("test");
     res.send({ data: getData.rows, jumlahData: getData.rowCount });
   } catch (error) {
     res.status(400).send("There's an Error!");
@@ -16,12 +16,14 @@ const getUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
   const id = req?.params.id;
+  console.log(id);
   try {
     const getData = await model.getUserById(id);
-
-    res.send({ data: getData.data.username , jumlahData: getData.rowCount });
+    res.send({ data: getData.rows, jumlahData: getData.rowCount });
+    console.log(getData.rows);
   } catch (error) {
     res.status(400).send("There's an Error!");
+    console.log(error);
   }
 };
 
@@ -92,21 +94,14 @@ const addUser = async (req, res) => {
 };
 
 // PATCH USERS
+
 const editUser = async (req, res) => {
   try {
+    console.log("test")
     const { username, email, password } = req.body;
 
     const id = req?.params.id;
     console.log(req.params, id);
-
-    // const isimage = req.files.image;
-    // !isimage ? null : isimage[0];
-    // const image = isimage[0].filename;
-    // image? req.files.image[0].filename:[]
-    // const image = req.files.image[0].filename;
-
-    // console.log("----------------------------");
-    // console.log(image);
 
     console.log("----------------------------");
 
@@ -119,11 +114,6 @@ const editUser = async (req, res) => {
       const newEmail = email || getData?.rows[0]?.email;
 
       let message = "profile";
-
-      // if (newUserName) message += "username,";
-      // if (newPassword) message += "password,";
-      // if (newEmail) message += "email,";
-
       const editData = await model.editUser({
         username: newUserName,
         email: newEmail,
@@ -153,10 +143,6 @@ const editUserProfile = async (req, res) => {
     const id = req?.params.id;
     console.log(req.params, id);
 
-    // const isimage = req.files.image;
-    // !isimage ? null : isimage[0];
-    // const image = isimage[0].filename;
-    // image? req.files.image[0].filename:[]
     const image = req.files.image[0].filename;
 
     console.log("----------------------------");

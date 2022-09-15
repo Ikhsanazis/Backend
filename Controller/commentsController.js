@@ -4,7 +4,6 @@ const model = require('../Model/commentsModel')
 const getComments = async (req, res) => {
   try {
     const getData = await model.getComments()
-
     res.send({ data: getData.rows, jumlahData: getData.rowCount })
   } catch (error) {
     res.status(400).send("There's an Error!")

@@ -64,8 +64,8 @@ const addUser = (props) => {
 const editUser = (props) => {
   return new Promise((resolve, reject) => {
     db.query(
-      'UPDATE users SET username = $1, email = $2, password = $3, image = $4 WHERE id = $5',
-      [props.username, props.email, props.password,props.image, props.id],
+      'UPDATE users SET username = $1, email = $2, password = $3  WHERE id = $4',
+      [props.username, props.email, props.password, props.id],
       (error, result) => {
         if (error) {
           reject(error)

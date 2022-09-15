@@ -12,6 +12,32 @@ const getRecipes = async (req, res) => {
   }
 };
 
+const getLike = async (req, res) => {
+  const user_id = parseInt(req?.params?.user_id);
+
+  try {
+    const getData = await model.getLike(user_id);
+
+    res.send({ data: getData.rows, jumlahData: getData.rowCount });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("There's an Error!");
+  }
+};
+
+const getSave = async (req, res) => {
+  const user_id = parseInt(req?.params?.user_id);
+
+  try {
+    const getData = await model.getSave(user_id);
+
+    res.send({ data: getData.rows, jumlahData: getData.rowCount });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("There's an Error!");
+  }
+};
+
 const getPopular = async (req, res) => {
   try {
     const getData = await model.getPopular();
@@ -143,22 +169,23 @@ const editRecipes = async (req, res) => {
 
     const getData = await model.getRecipesById(recipe_id);
     console.log(getData, "TEST");
+    console.log(name,ingredients,category);
 
-    const isimage = req.files.image;
-    !isimage ? null : isimage[0];
-    const image = isimage[0].filename;
-    // image? req.files.image[0].filename:[]
-    console.log("----------------------------");
-    console.log(image);
+    // const isimage = req.files.image;
+    // !isimage ? null : isimage[0];
+    // const image = isimage[0].filename;
+    // // image? req.files.image[0].filename:[]
+    // console.log("----------------------------");
+    // console.log(image);
 
     console.log("----------------------------");
     // {video?video:[]}
-    req.files.video ? req.files.video : [];
-    const video = req.files.video.map((e) => {
-      return e.filename;
-    });
-    console.log(video);
-    console.log("----------------------------");
+    // req.files.video ? req.files.video : [];
+    // const video = req.files.video.map((e) => {
+    //   return e.filename;
+    // });
+    // console.log(video);
+    // console.log("----------------------------");
 
     if (getData.rowCount > 0) {
       const newName = name || getData.rows[0].recipe_id;
@@ -176,6 +203,74 @@ const editRecipes = async (req, res) => {
         name: newName,
         ingredients: newIngredients,
         category: newCategory,
+        // image,
+        // video,
+        user_id: newUser_id,
+        recipe_id: newRecipe_id,
+      });
+
+      // const editData = await model.editRecipes({
+      //   username: newUserName,
+      //   email: newEmail,
+      //   password: newPassword,
+      //   image,
+      //   id,
+      // });
+
+      console.log("test");
+
+      if (editData) {
+        res.send(`${message} updated`);
+      } else {
+        res.status(400).send("failed to change");
+      }
+    } else {
+      res.status(400).send("data not found");
+    }
+  } catch (error) {
+    res.status(400).send(console.log(error));
+  }
+};
+
+const editRecipesImage = async (req, res) => {
+  try {
+    const { name, ingredients, category } = req.body;
+    const { recipe_id } = req.params;
+    console.log(recipe_id);
+
+    const getData = await model.getRecipesById(recipe_id);
+    console.log(getData, "TEST");
+    console.log(name,ingredients,category);
+
+    const isimage = req.files.image;
+    !isimage ? null : isimage[0];
+    const image = isimage[0].filename;
+    // image? req.files.image[0].filename:[]
+    console.log("----------------------------");
+    console.log(image);
+
+    console.log("----------------------------");
+    // {video?video:[]}
+    // req.files.video ? req.files.video : [];
+    const video = req.files.video.map((e) => {
+      return e.filename;
+    });
+    console.log(video);
+    console.log("----------------------------");
+
+    if (getData.rowCount > 0) {
+      // const newName = name || getData.rows[0].recipe_id;
+      // const newIngredients = ingredients || getData.rows[0].recipe_id;
+      // const newCategory = category || getData.rows[0].category;
+      const newRecipe_id = getData.rows[0].recipe_id;
+      const newUser_id = getData.rows[0].user_id;
+      // console.log(image)
+
+      let message = "Recipe";
+      // console.log(newIngredients)
+      // if (newName) message += "Name,";
+      // if (newIngredients) message += "Ingredients,";
+      const editData = await model.editRecipes({
         image,
         video,
         user_id: newUser_id,
@@ -229,15 +324,55 @@ const deleteRecipes = async (req, res) => {
   }
 };
 
+const addLike = async (req, res) => {
+  try {
+    const { user_id, recipe_id} = req.params
+    console.log(user_id, recipe_id)
+    const addComments = await model.addLike({ user_id,recipe_id })
+
+    if (addComments) {
+      res.send('Liked')
+    } else {
+      res.status(400).send('Failed to add')
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(400).send("There's an Error!")
+  }
+}
+
+const addSave = async (req, res) => {
+  try {
+    const { user_id, recipe_id} = req.params
+    console.log(user_id, recipe_id)
+    // const { comment } = req.body
+    const addComments = await model.addSave({ user_id,recipe_id })
+
+    if (addComments) {
+      res.send('Saved this recipe')
+    } else {
+      res.status(400).send('Failed to add')
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(400).send("There's an Error!")
+  }
+}
+
 module.exports = {
   getRecipes,
+  getLike,
+  getSave,
   findRecipes,
   newRecipes,
   addRecipes,
   editRecipes,
+  editRecipesImage,
   deleteRecipes,
   pagination,
   getUsersRecipes,
   getDetailRecipes,
   getPopular,
+  addLike,
+  addSave
 };

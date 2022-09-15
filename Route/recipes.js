@@ -8,7 +8,7 @@ Router.get('/recipes', controller.getRecipes)
 // GET RECIPES ROUTES
 Router.get('/popular', controller.getPopular)
 
-// GET RECIPES ROUTES
+// GET DETAIL
 Router.get('/recipes/:recipe_id', controller.getDetailRecipes)
 
 // GET RECIPES ROUTES
@@ -26,8 +26,18 @@ Router.get('/recipes/pagination', controller.pagination)
 // POST RECIPES
 Router.post('/recipes/add/:id',upload, controller.addRecipes)
 
-// PATCH RECIPES
-Router.patch('/edit/:recipe_id',upload, controller.editRecipes)
+// EDIT RECIPES
+Router.patch('/edit/:recipe_id', controller.editRecipes)
+Router.patch('/editimage/:recipe_id',upload, controller.editRecipesImage)
+
+//LIKE
+Router.post('/like/:user_id/:recipe_id', controller.addLike)
+Router.get('/likedrecipes/:user_id', controller.getLike)
+
+//SAVE
+Router.post('/save/:user_id/:recipe_id', controller.addSave)
+Router.get('/savedrecipes/:user_id', controller.getSave)
+
 
 // DELETE RECIPES ROUTES
 Router.delete('/recipes/delete', controller.deleteRecipes)
