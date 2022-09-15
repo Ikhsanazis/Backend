@@ -129,7 +129,7 @@ const editRecipes = (props) => {
 const getRecipesById = (recipe_id) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "SELECT users.id, users.username, recipes.name, recipes.recipe_id, recipes.ingredients,recipes.image, recipes.video FROM recipes INNER JOIN users ON recipes.recipe_id = users.id WHERE recipe_id = $1",
+      "SELECT *FROM recipes WHERE recipe_id = $1",
       [recipe_id],
       (error, result) => {
         if (error) {

@@ -14,6 +14,17 @@ const getUsers = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  const id = req?.params.id;
+  try {
+    const getData = await model.getUserById(id);
+
+    res.send({ data: getData.data.username , jumlahData: getData.rowCount });
+  } catch (error) {
+    res.status(400).send("There's an Error!");
+  }
+};
+
 // POST USERS
 const addUser = async (req, res) => {
   try {
@@ -210,5 +221,6 @@ module.exports = {
   addUser,
   editUser,
   deleteUser,
-  editUserProfile
+  editUserProfile,
+  getUserById,
 };
