@@ -15,25 +15,33 @@ const getRecipes = () => {
 
 const getSave = (user_id) => {
   return new Promise((resolve, reject) => {
-    db.query("SELECT recipes.image, recipes.recipe_id, recipes.category, recipes.liked FROM saves INNER JOIN recipes ON saves.recipe_id = recipes.recipe_id WHERE saves.user_id=$1 ",[user_id], (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
+    db.query(
+      "SELECT recipes.image, recipes.recipe_id, recipes.category, recipes.liked FROM saves INNER JOIN recipes ON saves.recipe_id = recipes.recipe_id WHERE saves.user_id=$1 ",
+      [user_id],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
       }
-    });
+    );
   });
 };
 
 const getLike = (user_id) => {
   return new Promise((resolve, reject) => {
-    db.query("SELECT recipes.image, recipes.recipe_id, recipes.category, recipes.liked FROM likes INNER JOIN recipes ON likes.recipe_id = recipes.recipe_id WHERE likes.user_id=$1 ",[user_id], (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
+    db.query(
+      "SELECT recipes.image, recipes.recipe_id, recipes.category, recipes.liked FROM likes INNER JOIN recipes ON likes.recipe_id = recipes.recipe_id WHERE likes.user_id=$1 ",
+      [user_id],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
       }
-    });
+    );
   });
 };
 
@@ -120,7 +128,7 @@ const addSave = (props) => {
   return new Promise((resolve, reject) => {
     db.query(
       "INSERT INTO saves ( user_id, recipe_id) VALUES ($1, $2) RETURNING *",
-      [ props.user_id, props.recipe_id],
+      [props.user_id, props.recipe_id],
       (error, result) => {
         if (error) {
           reject(error);
@@ -135,8 +143,16 @@ const addSave = (props) => {
 const addRecipes = (props) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "INSERT INTO recipes ( name, ingredients, category,user_id) VALUES ($1, $2, $3, $4, )",
-      [props.name, props.ingredients, props.category, props.user_id],
+      "INSERT INTO recipes ( name, ingredients, category,image,video,liked,user_id) VALUES ($1, $2, $3, $4, $5,$6,$7 )",
+      [
+        props.name,
+        props.ingredients,
+        props.category,
+        props.image,
+        props.video,
+        props.liked,
+        props.user_id,
+      ],
       (error, result) => {
         if (error) {
           reject(error);

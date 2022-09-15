@@ -4,7 +4,6 @@ const model = require("../Model/recipesModel");
 const getRecipes = async (req, res) => {
   try {
     const getData = await model.getRecipes();
-
     res.send({ data: getData.rows, jumlahData: getData.rowCount });
   } catch (error) {
     console.log(error);
@@ -12,28 +11,11 @@ const getRecipes = async (req, res) => {
   }
 };
 
-const getLike = async (req, res) => {
-  const user_id = parseInt(req?.params?.user_id);
-
+const newRecipes = async (req, res) => {
   try {
-    const getData = await model.getLike(user_id);
-
+    const getData = await model.newRecipes();
     res.send({ data: getData.rows, jumlahData: getData.rowCount });
   } catch (error) {
-    console.log(error);
-    res.status(400).send("There's an Error!");
-  }
-};
-
-const getSave = async (req, res) => {
-  const user_id = parseInt(req?.params?.user_id);
-
-  try {
-    const getData = await model.getSave(user_id);
-
-    res.send({ data: getData.rows, jumlahData: getData.rowCount });
-  } catch (error) {
-    console.log(error);
     res.status(400).send("There's an Error!");
   }
 };
@@ -41,7 +23,6 @@ const getSave = async (req, res) => {
 const getPopular = async (req, res) => {
   try {
     const getData = await model.getPopular();
-
     res.send({ data: getData.rows, jumlahData: getData.rowCount });
   } catch (error) {
     console.log(error);
@@ -52,9 +33,7 @@ const getPopular = async (req, res) => {
 const getDetailRecipes = async (req, res) => {
   try {
     const recipe_id = parseInt(req?.params?.recipe_id);
-    // console.log(req.params)
     const getData = await model.getRecipesById(recipe_id);
-
     res.send({ data: getData.rows, jumlahData: getData.rowCount });
   } catch (error) {
     console.log(error);
@@ -65,9 +44,35 @@ const getDetailRecipes = async (req, res) => {
 const getUsersRecipes = async (req, res) => {
   try {
     const user_id = parseInt(req?.params?.user_id);
-    // console.log(req.params)
     const getData = await model.getRecipesByUser(user_id);
+    res.send({ data: getData.rows, jumlahData: getData.rowCount });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("There's an Error!");
+  }
+};
 
+
+
+//GET LIKED RECIPES
+const getLike = async (req, res) => {
+  const user_id = parseInt(req?.params?.user_id);
+
+  try {
+    const getData = await model.getLike(user_id);
+    res.send({ data: getData.rows, jumlahData: getData.rowCount });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("There's an Error!");
+  }
+};
+
+//GET SAVED RECIPE
+const getSave = async (req, res) => {
+  const user_id = parseInt(req?.params?.user_id);
+
+  try {
+    const getData = await model.getSave(user_id);
     res.send({ data: getData.rows, jumlahData: getData.rowCount });
   } catch (error) {
     console.log(error);
@@ -79,19 +84,7 @@ const getUsersRecipes = async (req, res) => {
 const findRecipes = async (req, res) => {
   try {
     const { name } = req.body;
-
     const getData = await model.findRecipes(name);
-
-    res.send({ data: getData.rows, jumlahData: getData.rowCount });
-  } catch (error) {
-    res.status(400).send("There's an Error!");
-  }
-};
-
-// FIND NEW RECIPES
-const newRecipes = async (req, res) => {
-  try {
-    const getData = await model.newRecipes();
     res.send({ data: getData.rows, jumlahData: getData.rowCount });
   } catch (error) {
     res.status(400).send("There's an Error!");
@@ -115,8 +108,8 @@ const pagination = async (req, res) => {
   }
 };
 
-// POST RECIPES
 
+// POST RECIPES
 const addRecipes = async (req, res) => {
   try {
     const { name, ingredients, category } = req.body;
@@ -304,7 +297,6 @@ const editRecipesImage = async (req, res) => {
 const deleteRecipes = async (req, res) => {
   try {
     const { id } = req.body;
-
     const getData = await model.getRecipesById(id);
 
     if (getData.rowCount > 0) {
@@ -324,10 +316,11 @@ const deleteRecipes = async (req, res) => {
   }
 };
 
+
+// LIKE RECIPE
 const addLike = async (req, res) => {
   try {
     const { user_id, recipe_id} = req.params
-    console.log(user_id, recipe_id)
     const addComments = await model.addLike({ user_id,recipe_id })
 
     if (addComments) {
@@ -341,11 +334,10 @@ const addLike = async (req, res) => {
   }
 }
 
+//SAVE RECIPE
 const addSave = async (req, res) => {
   try {
     const { user_id, recipe_id} = req.params
-    console.log(user_id, recipe_id)
-    // const { comment } = req.body
     const addComments = await model.addSave({ user_id,recipe_id })
 
     if (addComments) {

@@ -2,7 +2,7 @@ const model = require("../Model/usersModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-// USERS LOGIN
+// LOGIN
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;

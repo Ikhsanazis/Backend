@@ -10,7 +10,6 @@ const getComments = async (req, res) => {
   }
 }
 
-// GET COMMENTS
 const getCommentById = async (req, res) => {
   try {
     const{recipe_id} = req.params
@@ -20,16 +19,6 @@ const getCommentById = async (req, res) => {
     res.send({ data: getData.rows, jumlahData: getData.rowCount })
   } catch (error) {
     res.status(400).send("There's an Error!")
-  }
-}
-
-// GET reviews
-const reviews = async (req, res) => {
-  try {
-    const getData = await model.reviews()
-    res.send({ data: getData.rows, jumlahData: getData.rowCount })
-  } catch (error) {
-    res.status(400).send('error', error)
   }
 }
 
@@ -54,7 +43,18 @@ const addComments = async (req, res) => {
 
 module.exports = {
   getComments,
-  reviews,
+  // reviews,
   addComments,
   getCommentById
 }
+
+
+// GET reviews
+// const reviews = async (req, res) => {
+//   try {
+//     const getData = await model.reviews()
+//     res.send({ data: getData.rows, jumlahData: getData.rowCount })
+//   } catch (error) {
+//     res.status(400).send('error', error)
+//   }
+// }

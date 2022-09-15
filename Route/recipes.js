@@ -4,21 +4,13 @@ const upload = require('../Middleware/multer')
 
 // GET RECIPES ROUTES
 Router.get('/recipes', controller.getRecipes)
-
-// GET RECIPES ROUTES
 Router.get('/popular', controller.getPopular)
-
-// GET DETAIL
+Router.get('/newrecipe', controller.newRecipes)
 Router.get('/recipes/:recipe_id', controller.getDetailRecipes)
-
-// GET RECIPES ROUTES
 Router.get('/recipes/:user_id', controller.getUsersRecipes)
 
 // FIND RECIPES
 Router.get('/recipes/find', controller.findRecipes)
-
-// FIND NEW RECIPES
-Router.get('/newrecipe', controller.newRecipes)
 
 // pagination
 Router.get('/recipes/pagination', controller.pagination)
@@ -30,17 +22,18 @@ Router.post('/recipes/add/:id',upload, controller.addRecipes)
 Router.patch('/edit/:recipe_id', controller.editRecipes)
 Router.patch('/editimage/:recipe_id',upload, controller.editRecipesImage)
 
-//LIKE
+// DELETE RECIPES ROUTES
+Router.delete('/recipes/delete', controller.deleteRecipes)
+
+// LIKE
 Router.post('/like/:user_id/:recipe_id', controller.addLike)
 Router.get('/likedrecipes/:user_id', controller.getLike)
 
-//SAVE
+// SAVE
 Router.post('/save/:user_id/:recipe_id', controller.addSave)
 Router.get('/savedrecipes/:user_id', controller.getSave)
 
 
-// DELETE RECIPES ROUTES
-Router.delete('/recipes/delete', controller.deleteRecipes)
 
 module.exports = Router
 
