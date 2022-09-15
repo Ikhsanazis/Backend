@@ -6,9 +6,6 @@ const upload = require("../Middleware/multer");
 Router.get("/users", controller.getUsers);
 Router.get("/users/:id", controller.getUserById);
 
-// POST USERS
-Router.post("/users/add", controller.addUser);
-
 // EDIT USERS
 Router.patch("/user/edit/:id", controller.editUser);
 Router.patch("/user/editimage/:id", upload, controller.editUserProfile);
