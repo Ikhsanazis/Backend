@@ -28,6 +28,7 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 const allowlist = [
   "https://localhost:3000",
   "https://secretingredients-98d7f.web.app",
+  "https://secretingredients-98d7f.web.app/recipes/add/:id",
 ];
 const corsOptionsDelegate = function (req, callback) {
   let corsOptions;
