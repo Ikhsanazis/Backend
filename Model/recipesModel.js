@@ -57,6 +57,22 @@ const getPopular = () => {
   });
 };
 
+const getRecipesByCategory = (category) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT * FROM recipes WHERE category = $1",
+      [category],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
 // FIND RECIPES
 const findRecipes = (name) => {
   return new Promise((resolve, reject) => {
@@ -167,13 +183,11 @@ const addRecipes = (props) => {
 const editRecipes = (props) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "UPDATE recipes SET name = $1, ingredients = $2, category = $3, image = $4, video=$5, user_id=$6 WHERE recipe_id = $7",
+      "UPDATE recipes SET name = $1, ingredients = $2, category = $3, user_id=$4 WHERE recipe_id = $5",
       [
         props.name,
         props.ingredients,
         props.category,
-        props.image,
-        props.video,
         props.user_id,
         props.recipe_id,
       ],
@@ -191,11 +205,8 @@ const editRecipes = (props) => {
 const editRecipesImage = (props) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "UPDATE recipes SET name = $1, ingredients = $2, category = $3, image = $4, video=$5, user_id=$6 WHERE recipe_id = $7",
+      "UPDATE recipes SET  image = $1, video=$2, user_id=$3 WHERE recipe_id = $4",
       [
-        props.name,
-        props.ingredients,
-        props.category,
         props.image,
         props.video,
         props.user_id,
@@ -291,4 +302,5 @@ module.exports = {
   addLike,
   addSave,
   getLike,
+  getRecipesByCategory
 };

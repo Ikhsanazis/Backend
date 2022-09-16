@@ -33,6 +33,7 @@ const getPopular = async (req, res) => {
 const getDetailRecipes = async (req, res) => {
   try {
     const recipe_id = parseInt(req?.params?.recipe_id);
+    console.log(recipe_id)
     const getData = await model.getRecipesById(recipe_id);
     res.send({ data: getData.rows, jumlahData: getData.rowCount });
   } catch (error) {
@@ -48,6 +49,16 @@ const getUsersRecipes = async (req, res) => {
     res.send({ data: getData.rows, jumlahData: getData.rowCount });
   } catch (error) {
     console.log(error);
+    res.status(400).send("There's an Error!");
+  }
+};
+
+const getRecipesByCategory = async (req, res) => {
+  try {
+    const category  = req?.params.category;
+    const getData = await model.getRecipesByCategory(category);
+    res.send({ data: getData.rows, jumlahData: getData.rowCount });
+  } catch (error) {
     res.status(400).send("There's an Error!");
   }
 };
@@ -161,7 +172,6 @@ const editRecipes = async (req, res) => {
     console.log(recipe_id);
 
     const getData = await model.getRecipesById(recipe_id);
-    console.log(getData, "TEST");
     console.log(name,ingredients,category);
 
     // const isimage = req.files.image;
@@ -263,7 +273,7 @@ const editRecipesImage = async (req, res) => {
       // console.log(newIngredients)
       // if (newName) message += "Name,";
       // if (newIngredients) message += "Ingredients,";
-      const editData = await model.editRecipes({
+      const editData = await model.editRecipesImage({
         image,
         video,
         user_id: newUser_id,
@@ -366,5 +376,6 @@ module.exports = {
   getDetailRecipes,
   getPopular,
   addLike,
-  addSave
+  addSave,
+  getRecipesByCategory
 };

@@ -97,9 +97,7 @@ const addUser = async (req, res) => {
 
 const editUser = async (req, res) => {
   try {
-    console.log("test")
     const { username, email, password } = req.body;
-
     const id = req?.params.id;
     console.log(req.params, id);
 
