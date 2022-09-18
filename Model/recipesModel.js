@@ -73,12 +73,28 @@ const getRecipesByCategory = (category) => {
   });
 };
 
+//('%${keyword}%')
 // FIND RECIPES
-const findRecipes = (name) => {
+const findRecipes = (keyword, filter) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "SELECT * FROM recipes WHERE name = $1",
-      [name],
+      `SELECT * FROM recipes WHERE  LOWER(name)LIKE '%${keyword}%' ORDER BY recipe_id ${filter}`,
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
+const SearchRecipes = (keyword, filter) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `SELECT * FROM recipes WHERE name= $1 ORDER BY $2`,
+      [keyword, filter],
       (error, result) => {
         if (error) {
           reject(error);
@@ -206,12 +222,7 @@ const editRecipesImage = (props) => {
   return new Promise((resolve, reject) => {
     db.query(
       "UPDATE recipes SET  image = $1, video=$2, user_id=$3 WHERE recipe_id = $4",
-      [
-        props.image,
-        props.video,
-        props.user_id,
-        props.recipe_id,
-      ],
+      [props.image, props.video, props.user_id, props.recipe_id],
       (error, result) => {
         if (error) {
           reject(error);
@@ -228,6 +239,22 @@ const getRecipesById = (recipe_id) => {
   return new Promise((resolve, reject) => {
     db.query(
       "SELECT *FROM recipes WHERE recipe_id = $1",
+      [recipe_id],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
+const getDetailRecipes = (recipe_id) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT recipes.*, users.username FROM recipes INNER JOIN users ON recipes.user_id = users.id WHERE recipes.recipe_id = $1",
       [recipe_id],
       (error, result) => {
         if (error) {
@@ -292,6 +319,7 @@ module.exports = {
   addRecipes,
   editRecipes,
   getRecipesById,
+  SearchRecipes,
   deleteRecipes,
   pagination,
   getRecipesByUser,
@@ -302,5 +330,6 @@ module.exports = {
   addLike,
   addSave,
   getLike,
-  getRecipesByCategory
+  getRecipesByCategory,
+  getDetailRecipes,
 };

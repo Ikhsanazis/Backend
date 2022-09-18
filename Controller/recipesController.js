@@ -33,8 +33,8 @@ const getPopular = async (req, res) => {
 const getDetailRecipes = async (req, res) => {
   try {
     const recipe_id = parseInt(req?.params?.recipe_id);
-    console.log(recipe_id)
-    const getData = await model.getRecipesById(recipe_id);
+    console.log(recipe_id);
+    const getData = await model.getDetailRecipes(recipe_id);
     res.send({ data: getData.rows, jumlahData: getData.rowCount });
   } catch (error) {
     console.log(error);
@@ -55,7 +55,7 @@ const getUsersRecipes = async (req, res) => {
 
 const getRecipesByCategory = async (req, res) => {
   try {
-    const category  = req?.params.category;
+    const category = req?.params.category;
     const getData = await model.getRecipesByCategory(category);
     res.send({ data: getData.rows, jumlahData: getData.rowCount });
   } catch (error) {
@@ -63,11 +63,8 @@ const getRecipesByCategory = async (req, res) => {
   }
 };
 
-
-
-//GET LIKED RECIPES
 const getLike = async (req, res) => {
-  const user_id = parseInt(req?.params?.user_id);
+  const user_id = req?.params?.user_id;
 
   try {
     const getData = await model.getLike(user_id);
@@ -78,9 +75,8 @@ const getLike = async (req, res) => {
   }
 };
 
-//GET SAVED RECIPE
 const getSave = async (req, res) => {
-  const user_id = parseInt(req?.params?.user_id);
+  const user_id = req?.params?.user_id;
 
   try {
     const getData = await model.getSave(user_id);
@@ -91,13 +87,28 @@ const getSave = async (req, res) => {
   }
 };
 
-// FIND RECIPES
 const findRecipes = async (req, res) => {
   try {
-    const { name } = req.body;
-    const getData = await model.findRecipes(name);
+    const keyword = req.query.keyword.toLowerCase();
+    const filter = req.query.filter;
+
+    console.log(keyword, filter);
+    const getData = await model.findRecipes(keyword, filter);
     res.send({ data: getData.rows, jumlahData: getData.rowCount });
   } catch (error) {
+    console.log(error);
+    res.status(400).send("There's an Error!");
+  }
+};
+
+const searchRecipes = async (req, res) => {
+  const { keyword, filter } = req.body;
+  console.log(keyword, filter);
+  try {
+    const getData = await model.findRecipes(keyword, filter);
+    res.send({ data: getData.rows, jumlahData: getData.rowCount });
+  } catch (error) {
+    console.log(error);
     res.status(400).send("There's an Error!");
   }
 };
@@ -118,7 +129,6 @@ const pagination = async (req, res) => {
     res.status(400).send("must greater than 0");
   }
 };
-
 
 // POST RECIPES
 const addRecipes = async (req, res) => {
@@ -172,53 +182,25 @@ const editRecipes = async (req, res) => {
     console.log(recipe_id);
 
     const getData = await model.getRecipesById(recipe_id);
-    console.log(name,ingredients,category);
-
-    // const isimage = req.files.image;
-    // !isimage ? null : isimage[0];
-    // const image = isimage[0].filename;
-    // // image? req.files.image[0].filename:[]
-    // console.log("----------------------------");
-    // console.log(image);
+    console.log(name, ingredients, category);
 
     console.log("----------------------------");
-    // {video?video:[]}
-    // req.files.video ? req.files.video : [];
-    // const video = req.files.video.map((e) => {
-    //   return e.filename;
-    // });
-    // console.log(video);
-    // console.log("----------------------------");
 
     if (getData.rowCount > 0) {
-      const newName = name || getData.rows[0].recipe_id;
-      const newIngredients = ingredients || getData.rows[0].recipe_id;
+      const newName = name || getData.rows[0].name;
+      const newIngredients = ingredients || getData.rows[0].ingredients;
       const newCategory = category || getData.rows[0].category;
       const newRecipe_id = getData.rows[0].recipe_id;
       const newUser_id = getData.rows[0].user_id;
-      // console.log(image)
 
       let message = "Recipe";
-      // console.log(newIngredients)
-      // if (newName) message += "Name,";
-      // if (newIngredients) message += "Ingredients,";
       const editData = await model.editRecipes({
         name: newName,
         ingredients: newIngredients,
         category: newCategory,
-        // image,
-        // video,
         user_id: newUser_id,
         recipe_id: newRecipe_id,
       });
-
-      // const editData = await model.editRecipes({
-      //   username: newUserName,
-      //   email: newEmail,
-      //   password: newPassword,
-      //   image,
-      //   id,
-      // });
 
       console.log("test");
 
@@ -243,7 +225,7 @@ const editRecipesImage = async (req, res) => {
 
     const getData = await model.getRecipesById(recipe_id);
     console.log(getData, "TEST");
-    console.log(name,ingredients,category);
+    console.log(name, ingredients, category);
 
     const isimage = req.files.image;
     !isimage ? null : isimage[0];
@@ -326,46 +308,46 @@ const deleteRecipes = async (req, res) => {
   }
 };
 
-
 // LIKE RECIPE
 const addLike = async (req, res) => {
   try {
-    const { user_id, recipe_id} = req.params
-    const addComments = await model.addLike({ user_id,recipe_id })
+    const { user_id, recipe_id } = req.params;
+    const addComments = await model.addLike({ user_id, recipe_id });
 
     if (addComments) {
-      res.send('Liked')
+      res.send("Liked");
     } else {
-      res.status(400).send('Failed to add')
+      res.status(400).send("Failed to add");
     }
   } catch (error) {
-    console.log(error)
-    res.status(400).send("There's an Error!")
+    console.log(error);
+    res.status(400).send("There's an Error!");
   }
-}
+};
 
 //SAVE RECIPE
 const addSave = async (req, res) => {
   try {
-    const { user_id, recipe_id} = req.params
-    const addComments = await model.addSave({ user_id,recipe_id })
+    const { user_id, recipe_id } = req.params;
+    const addComments = await model.addSave({ user_id, recipe_id });
 
     if (addComments) {
-      res.send('Saved this recipe')
+      res.send("Saved this recipe");
     } else {
-      res.status(400).send('Failed to add')
+      res.status(400).send("Failed to add");
     }
   } catch (error) {
-    console.log(error)
-    res.status(400).send("There's an Error!")
+    console.log(error);
+    res.status(400).send("There's an Error!");
   }
-}
+};
 
 module.exports = {
   getRecipes,
   getLike,
   getSave,
   findRecipes,
+  searchRecipes,
   newRecipes,
   addRecipes,
   editRecipes,
@@ -377,5 +359,5 @@ module.exports = {
   getPopular,
   addLike,
   addSave,
-  getRecipesByCategory
+  getRecipesByCategory,
 };
