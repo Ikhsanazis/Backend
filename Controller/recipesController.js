@@ -133,11 +133,10 @@ const pagination = async (req, res) => {
 // POST RECIPES
 const addRecipes = async (req, res) => {
   try {
-    const { name, ingredients, category } = req.body;
+    const { name, ingredients, category, liked } = req.body;
     console.log(req.body.name);
     const user_id = req?.params.id;
     console.log(req.params, user_id);
-    const liked = 10;
 
     const image = req.files.image[0].filename;
     // image? req.files.image[0].filename:[]
