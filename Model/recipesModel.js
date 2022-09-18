@@ -199,11 +199,12 @@ const addRecipes = (props) => {
 const editRecipes = (props) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "UPDATE recipes SET name = $1, ingredients = $2, category = $3, user_id=$4 WHERE recipe_id = $5",
+      "UPDATE recipes SET name = $1, ingredients = $2, category = $3,liked=$4, user_id=$5 WHERE recipe_id = $6",
       [
         props.name,
         props.ingredients,
         props.category,
+        props.liked,
         props.user_id,
         props.recipe_id,
       ],

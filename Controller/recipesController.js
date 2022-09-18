@@ -133,8 +133,9 @@ const pagination = async (req, res) => {
 // POST RECIPES
 const addRecipes = async (req, res) => {
   try {
-    const { name, ingredients, category, liked } = req.body;
-    console.log(req.body.name);
+    const { name, ingredients, category } = req.body;
+    const liked = 0;
+    console.log(liked);
     const user_id = req?.params.id;
     console.log(req.params, user_id);
 
@@ -176,7 +177,7 @@ const addRecipes = async (req, res) => {
 // PATCH RECIPES
 const editRecipes = async (req, res) => {
   try {
-    const { name, ingredients, category } = req.body;
+    const { name, ingredients, category, liked } = req.body;
     const { recipe_id } = req.params;
     console.log(recipe_id);
 
@@ -191,6 +192,7 @@ const editRecipes = async (req, res) => {
       const newCategory = category || getData.rows[0].category;
       const newRecipe_id = getData.rows[0].recipe_id;
       const newUser_id = getData.rows[0].user_id;
+      const newliked = liked || getData.rows[0].liked;
 
       let message = "Recipe";
       const editData = await model.editRecipes({
@@ -198,6 +200,7 @@ const editRecipes = async (req, res) => {
         ingredients: newIngredients,
         category: newCategory,
         user_id: newUser_id,
+        liked: newliked,
         recipe_id: newRecipe_id,
       });
 
