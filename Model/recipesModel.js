@@ -16,7 +16,7 @@ const getRecipes = () => {
 const getSave = (user_id) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "SELECT recipes.image, recipes.recipe_id, recipes.category, recipes.liked FROM saves INNER JOIN recipes ON saves.recipe_id = recipes.recipe_id WHERE saves.user_id=$1 ",
+      "SELECT recipes.name, recipes.image, recipes.recipe_id, recipes.category, recipes.liked FROM saves INNER JOIN recipes ON saves.recipe_id = recipes.recipe_id WHERE saves.user_id=$1 ",
       [user_id],
       (error, result) => {
         if (error) {
@@ -32,7 +32,7 @@ const getSave = (user_id) => {
 const getLike = (user_id) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "SELECT recipes.image, recipes.recipe_id, recipes.category, recipes.liked FROM likes INNER JOIN recipes ON likes.recipe_id = recipes.recipe_id WHERE likes.user_id=$1 ",
+      "SELECT recipes.name, recipes.image, recipes.recipe_id, recipes.category, recipes.liked FROM likes INNER JOIN recipes ON likes.recipe_id = recipes.recipe_id WHERE likes.user_id=$1 ",
       [user_id],
       (error, result) => {
         if (error) {
