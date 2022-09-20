@@ -13,6 +13,21 @@ const getRecipes = () => {
   });
 };
 
+const latestRecipes = () => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT * FROM recipes WHERE recipe_id=(SELECT MAX(recipe_id) FROM recipes)",
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
 const getSave = (user_id) => {
   return new Promise((resolve, reject) => {
     db.query(
@@ -333,4 +348,5 @@ module.exports = {
   getLike,
   getRecipesByCategory,
   getDetailRecipes,
+  latestRecipes,
 };

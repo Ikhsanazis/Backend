@@ -6,6 +6,7 @@ const upload = require("../Middleware/multer");
 Router.get("/recipes", controller.getRecipes);
 Router.get("/popular", controller.getPopular);
 Router.get("/newrecipe", controller.newRecipes);
+Router.get("/latestrecipe", controller.latestRecipes);
 Router.get("/recipes/:category", controller.getRecipesByCategory);
 Router.get("/:recipe_id", controller.getDetailRecipes);
 Router.get("/user/recipes/:user_id", controller.getUsersRecipes);

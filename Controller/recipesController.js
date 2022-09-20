@@ -20,6 +20,15 @@ const newRecipes = async (req, res) => {
   }
 };
 
+const latestRecipes = async (req, res) => {
+  try {
+    const getData = await model.latestRecipes();
+    res.send({ data: getData.rows, jumlahData: getData.rowCount });
+  } catch (error) {
+    res.status(400).send("There's an Error!");
+  }
+};
+
 const getPopular = async (req, res) => {
   try {
     const getData = await model.getPopular();
@@ -362,4 +371,5 @@ module.exports = {
   addLike,
   addSave,
   getRecipesByCategory,
+  latestRecipes,
 };
