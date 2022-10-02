@@ -3,13 +3,16 @@ const db = require("../config/db"); // DATABASE
 // GET RECIPES
 const getRecipes = () => {
   return new Promise((resolve, reject) => {
-    db.query("SELECT * FROM recipes ", (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
+    db.query(
+      "SELECT * FROM recipes ORDER BY recipe_id ASC ",
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
       }
-    });
+    );
   });
 };
 
