@@ -187,7 +187,7 @@ const addRecipes = async (req, res) => {
       name,
       ingredients,
       image: imageUrl,
-      video: "",
+      // video: "",
       category,
       liked,
       user_id,
@@ -200,7 +200,7 @@ const addRecipes = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(400).send("There's an Error!");
+    res.status(400).send(error?.response ?? error);
   }
 };
 
