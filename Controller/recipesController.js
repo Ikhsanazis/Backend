@@ -149,12 +149,12 @@ const addRecipes = async (req, res) => {
     const user_id = req?.params.id;
     console.log(req.params, user_id);
 
-    const image = req.files.image[0].path;
-    console.log("----------------------------");
-    console.log(image);
-    console.log(req.files.image[0]);
+    // const image = req.files.image[0].path;
+    // console.log("----------------------------");
+    // console.log(image);
+    // console.log(req.files.image[0]);
 
-    console.log("----------------------------");
+    // console.log("----------------------------");
 
     // const video = req.files.video.map((e) => {
     //   return e.path;
@@ -194,7 +194,7 @@ const addRecipes = async (req, res) => {
     });
 
     if (addRecipes) {
-      res.send(req.files.image[0]);
+      res.send(req.files);
     } else {
       res.status(400).send("failed to add");
     }
