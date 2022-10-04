@@ -187,7 +187,7 @@ const addRecipes = async (req, res) => {
       name,
       ingredients,
       image: imageUrl,
-      // video: videoUrl,
+      video: "",
       category,
       liked,
       user_id,
@@ -313,7 +313,7 @@ const editRecipesImage = async (req, res) => {
       res.status(400).send("data not found");
     }
   } catch (error) {
-    res.status(400).send(console.log(error));
+    res.status(400).send(error?.response ?? error);
   }
 };
 
