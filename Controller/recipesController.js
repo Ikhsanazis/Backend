@@ -1,5 +1,5 @@
 const model = require("../Model/recipesModel");
-const cloudinary = require("../Middleware/cloudinary");
+// const cloudinary = require("../Middleware/cloudinary");
 
 // GET RECIPES
 const getRecipes = async (req, res) => {
@@ -149,50 +149,46 @@ const addRecipes = async (req, res) => {
     const user_id = req?.params.id;
     console.log(req.params, user_id);
 
-    const image = req.files.image[0].path;
-    // image? req.files.image[0].filename:[]
-    console.log("----------------------------");
-    console.log(image);
-    console.log(req.files.image[0]);
+    // const image = req.files.image[0].path;
+    // console.log("----------------------------");
+    // console.log(image);
+    // console.log(req.files.image[0]);
 
-    console.log("----------------------------");
-    // {video?video:[]}
-    // req.files.video ? req.files.video : [];
-    const video = req.files.video.map((e) => {
-      return e.path;
-    });
-    console.log(video);
-    console.log("----------------------------");
+    // console.log("----------------------------");
 
-    const uploadPhoto = await cloudinary.uploader.upload(image, {
-      // upload_preset: `secretingredients`,
-    });
+    // const video = req.files.video.map((e) => {
+    //   return e.path;
+    // });
+    // console.log(video);
+    // console.log("----------------------------");
 
-    const imageUrl = uploadPhoto.url;
-    console.log("ini image", imageUrl);
-    // console.log("ini videon", videoUrl);
+    // const uploadPhoto = await cloudinary.uploader.upload(image, {
+    // });
 
-    const videoUrl = [];
-    console.log(video[0]);
-    video.map((e) => console.log("ini e", e));
-    console.log(video.length);
+    // const imageUrl = uploadPhoto.url;
+    // console.log("ini image", imageUrl);
 
-    for (let i = 0; i < video?.length; i++) {
-      const videos = await cloudinary.uploader.upload(video[i], {
-        // upload_preset: `secretingredients`,
-        resource_type: `video`,
-      });
-      console.log("loop", video[i]);
-      console.log("loop videos", videos.url);
-      videoUrl.push(videos.url);
-    }
-    console.log(videoUrl);
+    // const videoUrl = [];
+    // console.log(video[0]);
+    // video.map((e) => console.log("ini e", e));
+    // console.log(video.length);
+
+    // for (let i = 0; i < video?.length; i++) {
+    //   const videos = await cloudinary.uploader.upload(video[i], {
+    //     // upload_preset: `secretingredients`,
+    //     resource_type: `video`,
+    //   });
+    //   console.log("loop", video[i]);
+    //   console.log("loop videos", videos.url);
+    //   videoUrl.push(videos.url);
+    // }
+    // console.log(videoUrl);
 
     const addRecipes = await model.addRecipes({
       name,
       ingredients,
-      image: imageUrl,
-      video: videoUrl,
+      // image: imageUrl,
+      // video: videoUrl,
       category,
       liked,
       user_id,
