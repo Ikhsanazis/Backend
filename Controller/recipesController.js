@@ -186,7 +186,7 @@ const addRecipes = async (req, res) => {
     const addRecipes = await model.addRecipes({
       name,
       ingredients,
-      // image: imageUrl,
+      image: imageUrl ?? "",
       // video: "",
       category,
       liked,
