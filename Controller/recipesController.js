@@ -162,9 +162,9 @@ const addRecipes = async (req, res) => {
     // console.log(video);
     // console.log("----------------------------");
 
-    const uploadPhoto = await cloudinary.uploader.upload(image, {});
+    // const uploadPhoto = await cloudinary.uploader.upload(image, {});
 
-    const imageUrl = uploadPhoto.url;
+    // const imageUrl = uploadPhoto.url;
     // console.log("ini image", imageUrl);
 
     // const videoUrl = [];
@@ -186,7 +186,7 @@ const addRecipes = async (req, res) => {
     const addRecipes = await model.addRecipes({
       name,
       ingredients,
-      image: imageUrl ?? "",
+      // image: imageUrl ?? "",
       // video: "",
       category,
       liked,
@@ -194,7 +194,7 @@ const addRecipes = async (req, res) => {
     });
 
     if (addRecipes) {
-      res.send("Successfully added");
+      res.send(req.files.image[0]);
     } else {
       res.status(400).send("failed to add");
     }
