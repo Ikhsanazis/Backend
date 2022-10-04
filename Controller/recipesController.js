@@ -1,5 +1,5 @@
 const model = require("../Model/recipesModel");
-// const cloudinary = require("../Middleware/cloudinary");
+const cloudinary = require("../Middleware/cloudinary");
 
 // GET RECIPES
 const getRecipes = async (req, res) => {
@@ -149,12 +149,12 @@ const addRecipes = async (req, res) => {
     const user_id = req?.params.id;
     console.log(req.params, user_id);
 
-    // const image = req.files.image[0].path;
-    // console.log("----------------------------");
-    // console.log(image);
-    // console.log(req.files.image[0]);
+    const image = req.files.image[0].path;
+    console.log("----------------------------");
+    console.log(image);
+    console.log(req.files.image[0]);
 
-    // console.log("----------------------------");
+    console.log("----------------------------");
 
     // const video = req.files.video.map((e) => {
     //   return e.path;
@@ -162,11 +162,10 @@ const addRecipes = async (req, res) => {
     // console.log(video);
     // console.log("----------------------------");
 
-    // const uploadPhoto = await cloudinary.uploader.upload(image, {
-    // });
+    const uploadPhoto = await cloudinary.uploader.upload(image, {});
 
-    // const imageUrl = uploadPhoto.url;
-    // console.log("ini image", imageUrl);
+    const imageUrl = uploadPhoto.url;
+    console.log("ini image", imageUrl);
 
     // const videoUrl = [];
     // console.log(video[0]);
@@ -187,7 +186,7 @@ const addRecipes = async (req, res) => {
     const addRecipes = await model.addRecipes({
       name,
       ingredients,
-      // image: imageUrl,
+      image: imageUrl,
       // video: videoUrl,
       category,
       liked,
